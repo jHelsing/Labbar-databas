@@ -1,0 +1,261 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf340
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9640\viewh16580\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 INSERT INTO Department (departmentName, abbrevation)\
+VALUES ('Department of Computing Science', 'CS');\
+\
+INSERT INTO Department (departmentName, abbrevation)\
+VALUES ('Department of Computer Engineering', 'CE');\
+\
+INSERT INTO Department (departmentName, abbrevation)\
+VALUES ('Department of Mathematics', 'MATH');\
+\
+\
+\
+INSERT INTO Programme (programmeName, abbrevation)\
+VALUES ('Computer Science and Engineering', 'CSEP');\
+\
+INSERT INTO Programme (programmeName, abbrevation)\
+VALUES ('Software Engineering', 'SE');\
+\
+\
+\
+INSERT INTO HostedBy (departmentName, programmeName)\
+VALUES ('Department of Computing Science', 'Computer Science and Engineering');\
+\
+INSERT INTO HostedBy (departmentName, programmeName)\
+VALUES ('Department of Computer Engineering', 'Computer Science and Engineering');\
+\
+INSERT INTO HostedBy (departmentName, programmeName)\
+VALUES ('Department of Computer Engineering', 'Software Engineering');\
+\
+\
+\
+INSERT INTO Branch (branchName, programmeName)\
+VALUES ('Software Engineering', 'Software Engineering');\
+\
+INSERT INTO Branch (branchName, programmeName)\
+VALUES ('Mathematics', 'Software Engineering');\
+\
+INSERT INTO Branch (branchName, programmeName)\
+VALUES ('Interaction Design', 'Software Engineering');\
+\
+INSERT INTO Branch (branchName, programmeName)\
+VALUES ('Algorithms', 'Computer Science and Engineering');\
+\
+INSERT INTO Branch (branchName, programmeName)\
+VALUES ('Interaction Design', 'Computer Science and Engineering');\
+\
+\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('MAT111', 'Subtraction', 14, 'Department of Mathematics');\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('MAT211', 'Mathematical Analysis', 7.5, 'Department of Mathematics');\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('COE341', 'Object-Oriented Programming', 7.5, 'Department of Computer Engineering');\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('COE345', 'Programming in C', 7.0, 'Department of Computer Engineering');\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('COE355', 'Embedded Systems', 4.25, 'Department of Computer Engineering');\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('CSC403', 'Introduction to Algorithms', 4.25, 'Department of Computing Science');\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('CSC413', 'Advanced Algorithms', 7, 'Department of Computing Science');\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('CSC457', 'Databases', 7, 'Department of Computing Science');\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('ABC123', 'English for Engineers', 7, 'Department of Computer Engineering');\
+\
+INSERT INTO Course (courseCode, courseName, credits, deptName)\
+VALUES ('IAD678', 'Design Philosophy', 7, 'Department of Computer Engineering');\
+\
+\
+INSERT INTO Category (name)\
+VALUES ('Mathematical');\
+\
+INSERT INTO Category (name)\
+VALUES ('Research');\
+\
+INSERT INTO Category (name)\
+VALUES ('Seminar');\
+\
+\
+\
+INSERT INTO Student (studentID, name, nationalIDNbr, attendingProgramme)\
+VALUES ('bergor', 'Bertil G\'f6ransson', '19340330-4444', 'Computer Science and Engineering');\
+\
+INSERT INTO Student (studentID, name, nationalIDNbr, attendingProgramme)\
+VALUES ('sarlar', 'Sara Larsson', '19931128-1234', 'Computer Science and Engineering');\
+\
+INSERT INTO Student (studentID, name, nationalIDNbr, attendingProgramme)\
+VALUES ('akeber', '\'c5ke Bergstr\'f6m', '19910101-5678', 'Software Engineering');\
+\
+INSERT INTO Student (studentID, name, nationalIDNbr, attendingProgramme)\
+VALUES ('alemob', 'Alex Moberg', '19871204-9999', 'Software Engineering');\
+\
+INSERT INTO Student (studentID, name, nationalIDNbr, attendingProgramme)\
+VALUES ('lingot', 'Linda XII af G\'f6teborg', '19960403-1337', 'Software Engineering');\
+\
+\
+\
+INSERT INTO QueueableCourse (courseCode, capacity)\
+VALUES ('MAT111', 2);\
+\
+INSERT INTO QueueableCourse (courseCode, capacity)\
+VALUES ('COE345', 2);\
+\
+\
+INSERT INTO Takes (courseCode, studentID)\
+VALUES ('MAT111','bergor');\
+\
+INSERT INTO Takes (courseCode, studentID)\
+VALUES ('MAT111','sarlar');\
+\
+INSERT INTO Takes (courseCode, studentID)\
+VALUES ('COE345','bergor');\
+\
+INSERT INTO Takes (courseCode, studentID)\
+VALUES ('COE345','sarlar');\
+\
+INSERT INTO Takes (courseCode, studentID)\
+VALUES ('CSC457','sarlar');\
+\
+INSERT INTO Takes (courseCode, studentID)\
+VALUES ('MAT211', 'alemob');\
+\
+\
+\
+INSERT INTO QueuesFor (courseCode, studentID, placeInQueue)\
+VALUES ('MAT111', 'lingot', 1);\
+\
+INSERT INTO QueuesFor (courseCode, studentID, placeInQueue)\
+VALUES ('COE345', 'lingot', 1);\
+\
+INSERT INTO QueuesFor (courseCode, studentID, placeInQueue)\
+VALUES ('MAT111', 'alemob', 2);\
+\
+\
+\
+INSERT INTO BelongsTo (branchName, programmeName, studentID)\
+VALUES ('Interaction Design','Software Engineering','akeber');\
+\
+INSERT INTO BelongsTo (branchName, programmeName, studentID)\
+VALUES ('Interaction Design','Computer Science and Engineering','bergor');\
+\
+INSERT INTO BelongsTo (branchName, programmeName, studentID)\
+VALUES ('Software Engineering','Software Engineering','alemob');\
+\
+\
+INSERT INTO Completed (studentID, courseCode, grade)\
+VALUES ('akeber', 'ABC123', '5');\
+\
+INSERT INTO Completed (studentID, courseCode, grade)\
+VALUES ('akeber', 'MAT111', '3');\
+\
+INSERT INTO Completed (studentID, courseCode, grade)\
+VALUES ('akeber', 'MAT211', '4');\
+\
+INSERT INTO Completed (studentID, courseCode, grade)\
+VALUES ('akeber', 'CSC413', '3');\
+\
+INSERT INTO Completed (studentID, courseCode, grade)\
+VALUES ('akeber', 'CSC403', '4');\
+\
+INSERT INTO Completed (studentID, courseCode, grade)\
+VALUES ('akeber', 'CSC457', '3');\
+\
+INSERT INTO Completed (studentID, courseCode, grade)\
+VALUES ('alemob', 'MAT111', '5');\
+\
+INSERT INTO Completed (studentID, courseCode, grade)\
+VALUES ('akeber', 'COE341', '4');\
+\
+INSERT INTO Completed (studentID, courseCode, grade)\
+VALUES ('akeber', 'IAD678', '5');\
+\
+\
+\
+INSERT INTO MandatoryForBranch (branchName, programmeName, courseCode)\
+VALUES ('Interaction Design','Software Engineering','IAD678');\
+\
+INSERT INTO MandatoryForBranch (branchName, programmeName, courseCode)\
+VALUES ('Software Engineering','Software Engineering','CSC457');\
+\
+INSERT INTO MandatoryForBranch (branchName, programmeName, courseCode)\
+VALUES ('Interaction Design', 'Computer Science and Engineering', 'CSC403');\
+\
+\
+\
+INSERT INTO RecommendedForBranch (branchName, programmeName, courseCode)\
+VALUES ('Interaction Design', 'Software Engineering', 'ABC123');\
+\
+INSERT INTO RecommendedForBranch (branchName, programmeName, courseCode)\
+VALUES ('Interaction Design', 'Software Engineering', 'CSC457');\
+\
+INSERT INTO RecommendedForBranch (branchName, programmeName, courseCode)\
+VALUES ('Interaction Design', 'Computer Science and Engineering', 'IAD678');\
+\
+INSERT INTO RecommendedForBranch (branchName, programmeName, courseCode)\
+VALUES ('Interaction Design', 'Computer Science and Engineering', 'CSC413');\
+\
+INSERT INTO RecommendedForBranch (branchName, programmeName, courseCode)\
+VALUES ('Software Engineering', 'Software Engineering', 'ABC123');\
+\
+INSERT INTO RecommendedForBranch (branchName, programmeName, courseCode)\
+VALUES ('Software Engineering', 'Software Engineering', 'IAD678');\
+\
+\
+\
+INSERT INTO MandatoryForProgramme (programmeName, courseCode)\
+VALUES ('Software Engineering','COE341');\
+\
+INSERT INTO MandatoryForProgramme (programmeName, courseCode)\
+VALUES ('Computer Science and Engineering','COE355');\
+\
+\
+\
+INSERT INTO RecommendedForProgramme (programmeName, courseCode)\
+VALUES ('Software Engineering', 'COE345');\
+\
+INSERT INTO RecommendedForProgramme (programmeName, courseCode)\
+VALUES ('Computer Science and Engineering', 'COE345');\
+\
+\
+\
+INSERT INTO Requirements (courseCode, requiresCourseCode)\
+VALUES ('MAT211', 'MAT111');\
+\
+INSERT INTO Requirements (courseCode, requiresCourseCode)\
+VALUES ('CSC413','CSC403');\
+\
+\
+\
+INSERT INTO ClassifiedAs (courseCode, name)\
+VALUES ('MAT111','Mathematical');\
+\
+INSERT INTO ClassifiedAs (courseCode, name)\
+VALUES ('MAT211','Mathematical');\
+\
+INSERT INTO ClassifiedAs (courseCode, name)\
+VALUES ('CSC403','Mathematical');\
+\
+INSERT INTO ClassifiedAs (courseCode, name)\
+VALUES ('ABC123','Seminar');\
+\
+INSERT INTO ClassifiedAs (courseCode, name)\
+VALUES ('CSC403','Research');\
+\
+INSERT INTO ClassifiedAs (courseCode, name)\
+VALUES ('CSC413','Research');}

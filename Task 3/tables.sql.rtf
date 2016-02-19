@@ -1,0 +1,156 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf340
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red107\green0\blue109;\red83\green83\blue83;
+\red0\green0\blue0;\red16\green122\blue120;\red15\green112\blue1;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww8640\viewh16580\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs26 \cf2 \expnd0\expndtw0\kerning0
+CREATE TABLE \cf0 Department (\
+\'a0\'a0departmentName \cf3 TEXT\cf4 ,\cf0 \
+\'a0\'a0abbrevation \cf3 TEXT \cf2 NOT NULL\cf4 ,\cf0 \
+\'a0\'a0\cf2 PRIMARY KEY \cf0 (departmentName)\cf4 ,\cf0 \
+\'a0\'a0\cf2 UNIQUE \cf0 (abbrevation)\
+)\cf4 ;\
+\cf0 \
+\cf2 CREATE TABLE \cf0 Programme\'a0(\
+\'a0\'a0programmeName \cf3 TEXT\cf4 ,\cf0 \
+\'a0\'a0abbrevation \cf3 TEXT \cf2 NOT NULL\cf4 ,\cf0 \
+\'a0\'a0\cf2 PRIMARY KEY \cf0 (programmeName)\
+)\cf4 ;\
+\
+\cf5 CREATE TABLE HostedBy (\
+\'a0 departmentName TEXT,\
+\'a0 programmeName TEXT,\
+  PRIMARY KEY (departmentName, programmeName),\
+\'a0\'a0FOREIGN KEY (departmentName) REFERENCES Department (departmentName),\
+\'a0 FOREIGN KEY (programmeName) REFERENCES Programme (programmeName)\
+);\cf4 \
+\
+\cf2 CREATE TABLE \cf0 Branch (\
+\'a0 branchName \cf3 TEXT\cf4 ,\cf0 \
+\'a0 programmeName \cf3 TEXT\cf4 ,\cf0 \
+\'a0 \cf2 PRIMARY KEY \cf0 (branchName\cf4 ,\cf0 programmeName)\cf4 ,\cf0 \
+\'a0 FOREIGN \cf2 KEY \cf0 (programmeName)\'a0REFERENCES Programme (programmeName)\
+)\cf4 ;\
+\
+\cf2 CREATE TABLE \cf0 Course (\
+\'a0 courseCode \cf3 TEXT\cf4 ,\cf0 \
+\'a0 courseName \cf3 TEXT \cf2 NOT NULL\cf4 ,\cf0 \
+\'a0 credits \cf3 NUMERIC\cf0 (\cf6 2\cf0 ) \cf2 NOT NULL CHECK (credits > 0)\cf4 ,\cf0 \
+\'a0 deptName \cf3 TEXT \cf2 NOT NULL\cf4 ,\cf0 \
+\'a0 \cf2 PRIMARY KEY \cf0 (courseCode)\cf4 ,\cf0 \
+\'a0 FOREIGN \cf2 KEY \cf0 (deptName) REFERENCES Department (departmentName)\
+)\cf4 ;\
+\
+\cf2 CREATE TABLE \cf0 Category\'a0(\
+\'a0 name \cf3 TEXT\cf4 ,\cf0 \
+\'a0 \cf2 PRIMARY KEY \cf0 (name)\
+)\cf4 ;\
+\
+CREATE TABLE Student (\
+  studentID TEXT,\
+  name TEXT NOT NULL,\
+  nationalIDNbr TEXT NOT NULL,\
+  attendingProgramme TEXT NOT NULL,\
+  PRIMARY KEY (studentID),\
+  UNIQUE (nationalIDNbr),\
+  UNIQUE (studentID, attendingProgramme),\
+  FOREIGN KEY (attendingProgramme) REFERENCES Programme (programmeName)\
+);\
+\
+CREATE TABLE QueueableCourse (\
+  courseCode TEXT,\
+  capacity INTEGER NOT NULL CHECK (capacity > 0),\
+  PRIMARY KEY (courseCode),\
+  FOREIGN KEY (courseCode) REFERENCES Course (courseCode)\
+);\
+\
+CREATE TABLE Takes (\
+  courseCode TEXT,\
+  studentID TEXT,\
+  PRIMARY KEY (courseCode, studentID),\
+  FOREIGN KEY (courseCode) REFERENCES Course (courseCode),\
+  FOREIGN KEY (studentID) REFERENCES Student (studentID)\
+);\
+\
+CREATE TABLE QueuesFor (\
+  courseCode TEXT,\
+  studentID TEXT,\
+  placeInQueue INT NOT NULL CHECK (placeInQueue > 0),\
+  UNIQUE (courseCode, placeInQueue),\
+  PRIMARY KEY (courseCode, studentID),\
+  FOREIGN KEY (courseCode) REFERENCES QueueableCourse (courseCode),\
+  FOREIGN KEY (studentID) REFERENCES Student (studentID)\
+);\
+\
+CREATE TABLE BelongsTo (\
+  branchName TEXT NOT NULL,\
+  programmeName TEXT NOT NULL,\
+  studentID TEXT,\
+  PRIMARY KEY (studentID),\
+  FOREIGN KEY (branchName, programmeName) REFERENCES Branch (branchName, programmeName),\
+  FOREIGN KEY (studentID, programmeName) REFERENCES Student (studentID, attendingProgramme)\
+);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 CREATE TABLE \cf0 Completed (\
+\'a0\'a0studentID \cf3 TEXT\cf4 ,\cf0 \
+\'a0\'a0courseCode \cf3 TEXT\cf4 ,\cf0 \
+\'a0\'a0grade \cf3 TEXT \cf2 NOT NULL \cf0 CHECK (grade \cf2 = \cf7 'U' \cf2 OR \cf0 grade \cf2 = \cf7 '3' \cf2 OR \cf0 grade \cf2 = \cf7 '4' \cf2 OR \cf0 grade \cf2 = \cf7 '5'\cf0 )\cf4 ,\cf0 \
+\'a0\'a0\cf2 PRIMARY KEY \cf0 (studentID\cf4 , \cf0 courseCode)\cf4 ,\cf0 \
+\'a0\'a0FOREIGN \cf2 KEY \cf0 (studentID) REFERENCES Student (studentID)\cf4 ,\cf0 \
+\'a0\'a0FOREIGN \cf2 KEY \cf0 (courseCode) REFERENCES Course (courseCode)\
+)\cf4 ;\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \
+CREATE TABLE MandatoryForBranch (\
+  branchName TEXT,\
+  programmeName TEXT,\
+  courseCode TEXT,\
+  PRIMARY KEY (branchName, programmeName, courseCode),\
+  FOREIGN KEY (branchName, programmeName) REFERENCES Branch (branchName, programmeName),\
+  FOREIGN KEY (courseCode) REFERENCES Course (courseCode)\
+);\
+\
+CREATE TABLE RecommendedForBranch (\
+  branchName TEXT,\
+  programmeName TEXT,\
+  courseCode TEXT,\
+  PRIMARY KEY (branchName, programmeName, courseCode),\
+  FOREIGN KEY (branchName, programmeName) REFERENCES Branch (branchName, programmeName),\
+  FOREIGN KEY (courseCode) REFERENCES Course (courseCode)\
+);\
+\
+CREATE TABLE MandatoryForProgramme (\
+  programmeName TEXT,\
+  courseCode TEXT,\
+  PRIMARY KEY (programmeName, courseCode),\
+  FOREIGN KEY (programmeName) REFERENCES Programme (programmeName),\
+  FOREIGN KEY (courseCode) REFERENCES Course (courseCode)\
+);\
+\
+CREATE TABLE RecommendedForProgramme (\
+  programmeName TEXT,\
+  courseCode TEXT,\
+  PRIMARY KEY (programmeName, courseCode),\
+  FOREIGN KEY (programmeName) REFERENCES Programme (programmeName),\
+  FOREIGN KEY (courseCode) REFERENCES Course (courseCode)\
+);\
+\
+CREATE TABLE Requirements (\
+  courseCode TEXT,\
+  requiresCourseCode TEXT,\
+  PRIMARY KEY (courseCode, requiresCourseCode),\
+  FOREIGN KEY (courseCode) REFERENCES Course (courseCode),\
+  FOREIGN KEY (requiresCourseCode) REFERENCES Course (courseCode)\
+);\
+\
+CREATE TABLE ClassifiedAs (\
+  courseCode TEXT,\
+  name TEXT,\
+  PRIMARY KEY (courseCode, name),\
+  FOREIGN KEY (courseCode) REFERENCES Course (courseCode),\
+  FOREIGN KEY (name) REFERENCES Category (name)\
+);}
