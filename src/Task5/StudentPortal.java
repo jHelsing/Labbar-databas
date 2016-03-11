@@ -84,9 +84,10 @@ public class StudentPortal
      * x whether or not the student fulfills the requirements for graduation
      */
     static void getInformation(Connection conn, String student) throws SQLException  {
-        String query = "SELECT * FROM studentsfollowing WHERE studentsfollowing.nationalidnbr = '" + student + "'";
-        Statement statement = conn.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+        String query = "SELECT * FROM studentsfollowing WHERE studentsfollowing.nationalidnbr = ?";
+        PreparedStatement statement = conn.prepareStatement(query);
+        statement.setString(1, student);
+        ResultSet resultSet = statement.executeQuery();
         System.out.println("Information for student " + student);
         System.out.println("-------------------------------------");
 
@@ -100,13 +101,11 @@ public class StudentPortal
 
         System.out.println();
         System.out.println("Read courses (name (code), credits: grade)");
-        /**
-         * evgeny lägg till i kommentaren
-         * Gör koden injection safe med ?
-         */
 
-        query = "SELECT * FROM finishedcourses WHERE finishedcourses.name = ?";
-        resultSet = statement.executeQuery(query);
+        query = "SELECT * FROM finishedcourses WHERE finishedcourses.name = '" + studentName + "'";
+        statement.close();
+        statement = conn.prepareStatement(query);
+        resultSet = statement.executeQuery();
         while (resultSet.next()) {
             String subQuery = "SELECT * FROM course WHERE course.coursename = '" + resultSet.getString(2) + "'";
             Statement s = conn.createStatement();
@@ -121,7 +120,9 @@ public class StudentPortal
         System.out.println("Registered courses (name (code): status)");
 
         query = "SELECT * FROM registrations WHERE registrations.studentid = '" + studentID + "'";
-        resultSet = statement.executeQuery(query);
+        statement.close();
+        statement = conn.prepareStatement(query);
+        resultSet = statement.executeQuery();
         while(resultSet.next()) {
             if(resultSet.getString(3).equals("Waiting")) {
                 // Student is in the queue for this course
@@ -142,7 +143,9 @@ public class StudentPortal
 
         System.out.println();
         query = "SELECT * FROM pathtograduation WHERE pathtograduation.studentid = '" + studentID + "'";
-        resultSet = statement.executeQuery(query);
+        statement.close();
+        statement = conn.prepareStatement(query);
+        resultSet = statement.executeQuery();
         resultSet.next();
 
         System.out.println("Seminar courses taken: " + resultSet.getInt(6));
@@ -162,15 +165,19 @@ public class StudentPortal
      * should try to register the student for that course.
      */
     static void registerStudent(Connection conn, String student, String course) throws SQLException {
-        String query = "SELECT * FROM studentsfollowing WHERE studentsfollowing.nationalidnbr = '" + student + "'";
-        Statement statement = conn.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+        String query = "SELECT * FROM studentsfollowing WHERE studentsfollowing.nationalidnbr = ?";
+        PreparedStatement statement = conn.prepareStatement(query);
+        statement.setString(1, student);
+        ResultSet resultSet = statement.executeQuery();
         resultSet.next();
         String studentID = resultSet.getString(1);
         resultSet.close();
-        query = "INSERT INTO registrations(studentid, coursecode, currentstatus) VALUES ('" + studentID + "', '" + course + "', 'stuff' )";
+        query = "INSERT INTO registrations(studentid, coursecode, currentstatus) VALUES ('" + studentID + "', ? , 'stuff' )";
+        statement.close();
         try {
-            statement.executeUpdate(query);
+            statement = conn.prepareStatement(query);
+            statement.setString(1, course);
+            statement.executeUpdate();
             System.out.println("Student registered on course");
         } catch (PSQLException e) {
             System.out.println(e.getServerErrorMessage());
@@ -183,15 +190,19 @@ public class StudentPortal
      * should unregister the student from that course.
      */
     static void unregisterStudent(Connection conn, String student, String course) throws SQLException {
-        String query = "SELECT * FROM studentsfollowing WHERE studentsfollowing.nationalidnbr = '" + student + "'";
-        Statement statement = conn.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+        String query = "SELECT * FROM studentsfollowing WHERE studentsfollowing.nationalidnbr = ?";
+        PreparedStatement statement = conn.prepareStatement(query);
+        statement.setString(1, student);
+        ResultSet resultSet = statement.executeQuery();
         resultSet.next();
         String studentID = resultSet.getString(1);
         resultSet.close();
-        query = "DELETE FROM registrations WHERE registrations.studentid = '" + studentID + "' AND registrations.coursecode = '" + course + "'";
+        query = "DELETE FROM registrations WHERE registrations.studentid = '" + studentID + "' AND registrations.coursecode = ?";
+        statement.close();
         try {
-            statement.executeUpdate(query);
+            statement = conn.prepareStatement(query);
+            statement.setString(1, course);
+            statement.executeUpdate();
 
             System.out.println("Student no longer registered on course");
         } catch (PSQLException e) {
